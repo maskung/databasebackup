@@ -28,7 +28,7 @@ import socket
 DB_HOST = 'localhost' 
 DB_USER = 'root'
 DB_USER_PASSWORD = 'password'
-DB_NAME = '/root/backup_program/dblist.txt'
+DB_NAME = '/root/databasebackup/dblist.txt'
 BACKUP_PATH = '/root/dbbackup'
 LINE_API_TOKEN = 'mIo9LwELT1TjOkajPk4AaN35K1T2VeULc9vgC63IhfC'   #test
 #LINE_API_TOKEN = 'Yy91ui8zuZmd19BS4tonjCY9CEaOyaBy09mvNQXvGiw'   #admin task group
