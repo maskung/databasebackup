@@ -9,7 +9,7 @@
 # Created date: Nov 09, 2020
 # Last modified: Nov 10, 2020
 # Tested with : Python 2.7.15 & Python 3.5
-# Script Revision: 1.3
+# Script Revision: 1.4
 #
 ##########################################################
  
@@ -28,9 +28,8 @@ import socket
 DB_HOST = 'localhost' 
 DB_USER = 'root'
 DB_USER_PASSWORD = 'password'
-DB_NAME = '/var/root/backup_program/dblist.txt'
-#DB_NAME = 'cotto'
-BACKUP_PATH = '/var/root/backup'
+DB_NAME = '/root/backup_program/dblist.txt'
+BACKUP_PATH = '/root/dbbackup'
 LINE_API_TOKEN = 'mIo9LwELT1TjOkajPk4AaN35K1T2VeULc9vgC63IhfC'   #test
 #LINE_API_TOKEN = 'Yy91ui8zuZmd19BS4tonjCY9CEaOyaBy09mvNQXvGiw'   #admin task group
  
