@@ -31,6 +31,7 @@ DB_USER_PASSWORD = 'password'
 DB_NAME = '/var/root/backup_program/dblist.txt'
 #DB_NAME = 'cotto'
 BACKUP_PATH = '/var/root/backup'
+LINE_API_TOKEN = 'mIo9LwELT1TjOkajPk4AaN35K1T2VeULc9vgC63IhfC'
  
 # Getting current DateTime to create the separate backup folder like "20180817-123433".
 DATETIME = time.strftime('%Y%m%d-%H%M%S')
@@ -104,17 +105,15 @@ total, used, free  = disk_usage('/')
 text_display = "backup complete on " + socket.gethostname() + "\n"
 text_display += "Your backups created in '" + TODAYBACKUPPATH + "/' " + "\n"
 text_display += db_display
-text_display += "Disk avaliable : " + str(round((free/(1024*1024*1024)))) + "G(" + str(round((free/used)*100)) + "%)\n"
+text_display += "Disk avaliable : " + str(round((free/(1024*1024*1024)))) + " G (" + str(round((free/used)*100)) + "%)\n"
 
 print (text_display)
 
 #send to Line API
 url = 'https://notify-api.line.me/api/notify'
 #1-on-1 notifiy
-token = 'mIo9LwELT1TjOkajPk4AaN35K1T2VeULc9vgC63IhfC'
-#admin group
-#token = '1e0kAIyAkhwnMDMJ4iwKFYciexjcujsX9rJp3g6r9ba'
-headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
+#token = 'mIo9LwELT1TjOkajPk4AaN35K1T2VeULc9vgC63IhfC'
+headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+LINE_API_TOKEN}
 
 msg =  text_display
 r = requests.post(url, headers=headers, data = {'message':msg})
