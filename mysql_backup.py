@@ -9,7 +9,7 @@
 # Created date: Nov 09, 2020
 # Last modified: Nov 10, 2020
 # Tested with : Python 2.7.15 & Python 3.5
-# Script Revision: 1.1
+# Script Revision: 1.2
 #
 ##########################################################
  
