@@ -19,6 +19,8 @@ import os
 import time
 import datetime
 import pipes
+import requests
+import socket
  
 # MySQL database details to which backup to be done. Make sure below user having enough privileges to take databases backup.
 # To take multiple databases backup, create any file like /backup/dbnames.txt and put databases names one on each line and assigned to DB_NAME variable.
@@ -60,6 +62,7 @@ if multi:
    p = 1
    dbfile = open(DB_NAME,"r")
  
+   db_display = ""
    while p <= flength:
        db = dbfile.readline()   # reading database name from file
        db = db[:-1]         # deletes extra line
@@ -67,6 +70,8 @@ if multi:
        os.system(dumpcmd)
        gzipcmd = "gzip " + pipes.quote(TODAYBACKUPPATH) + "/" + db + ".sql"
        os.system(gzipcmd)
+       db_display += db + ".sql.gz --> " + str(round(os.path.getsize(pipes.quote(TODAYBACKUPPATH) + "/" + db + ".sql.gz")/(1024*1024),2)) +  " M\n"
+       #print (os.path.getsize(pipes.quote(TODAYBACKUPPATH) + "/" + db + ".sql.gz"))
        p = p + 1
    dbfile.close()
 else:
@@ -76,6 +81,40 @@ else:
    gzipcmd = "gzip " + pipes.quote(TODAYBACKUPPATH) + "/" + db + ".sql"
    os.system(gzipcmd)
  
-print ("")
-print ("Backup script completed")
-print ("Your backups have been created in '" + TODAYBACKUPPATH + "' directory")
+#print ("")
+#print ("Backup script completed")
+#print ("Your backups have been created in '" + TODAYBACKUPPATH + "' directory")
+#caculate free filesytem size
+def disk_usage(path):
+        """Return disk usage statistics about the given path.
+
+        Returned value is a named tuple with attributes 'total', 'used' and
+        'free', which are the amount of total, used and free space, in bytes.
+        """
+        st = os.statvfs(path)
+        free = st.f_bavail * st.f_frsize
+        total = st.f_blocks * st.f_frsize
+        used = (st.f_blocks - st.f_bfree) * st.f_frsize
+        return (total, used, free)
+
+total, used, free  = disk_usage('/')
+#print (str(round((total/(1024*1024*1024)))) + "G\n")
+#print (str(round((used/(1024*1024*1024)))) + "G\n")
+#print (str(round((free/(1024*1024*1024)))) + "G\n")
+text_display = "backup complete on " + socket.gethostname() + "\n"
+text_display += "Your backups created in '" + TODAYBACKUPPATH + "/' " + "\n"
+text_display += db_display
+text_display += "Disk avaliable : " + str(round((free/(1024*1024*1024)))) + "G(" + str(round((free/used)*100)) + "%)\n"
+
+print (text_display)
+
+#send to Line API
+url = 'https://notify-api.line.me/api/notify'
+#1-on-1 notifiy
+token = 'mIo9LwELT1TjOkajPk4AaN35K1T2VeULc9vgC63IhfC'
+#admin group
+#token = '1e0kAIyAkhwnMDMJ4iwKFYciexjcujsX9rJp3g6r9ba'
+headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
+
+msg =  text_display
+r = requests.post(url, headers=headers, data = {'message':msg})
